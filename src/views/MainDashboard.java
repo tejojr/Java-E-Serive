@@ -12,6 +12,9 @@ import components.PengambilanService;
 import components.Teknisi;
 import components.TeknisiService;
 import components.User;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,20 +28,20 @@ public class MainDashboard extends javax.swing.JFrame {
     public MainDashboard() {
         initComponents();
         setExtendedState(MainDashboard.MAXIMIZED_BOTH);
-         if(Login1.role.equals("admin")){   
+        if (Login1.role.equals("admin")) {
             m_service.setVisible(false);
             m_teknisi.setVisible(false);
 
-        }else if(Login1.role.equals("user")){
+        } else if (Login1.role.equals("user")) {
             m_pegawai.setVisible(false);
             m_laporan.setVisible(false);
             m_teknisi.setVisible(false);
-        }else{
+        } else {
             m_pegawai.setVisible(false);
             m_laporan.setVisible(false);
-            m_service.setVisible(false);   
+            m_service.setVisible(false);
         }
-        
+
     }
 
     /**
@@ -234,7 +237,12 @@ public class MainDashboard extends javax.swing.JFrame {
     private void mi_dataserviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_dataserviceActionPerformed
         DataService datas = new DataService();
         Desktop.add(datas);
-        datas.setVisible(true);          // TODO add your handling code here:
+        datas.setVisible(true);
+        try {
+            datas.setMaximum(true);// TODO add your handling code here:
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainDashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_mi_dataserviceActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
