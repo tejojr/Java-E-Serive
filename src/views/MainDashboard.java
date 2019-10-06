@@ -231,7 +231,13 @@ public class MainDashboard extends javax.swing.JFrame {
     private void mi_serviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_serviceActionPerformed
         TeknisiService ts = new TeknisiService();
         Desktop.add(ts);
-        ts.setVisible(true);   // TODO add your handling code here:
+        ts.setVisible(true);
+        try {
+            ts.setMaximum(true);// TODO add your handling code here:
+            // TODO add your handling code here:
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainDashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_mi_serviceActionPerformed
 
     private void mi_dataserviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_dataserviceActionPerformed

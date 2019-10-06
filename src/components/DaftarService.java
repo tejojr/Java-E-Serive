@@ -500,7 +500,7 @@ public class DaftarService extends javax.swing.JInternalFrame {
                 + "','" + t_merk.getText()
                 + "','" + t_keluhan.getText()
                 + "','" + t_kelengkapan.getText()
-                + "',null,0,0,'diterima','" + t_idservice.getText() + "')", "Transaksi berhasil ditambahkan");
+                + "',0,0,0,'diterima','" + t_idservice.getText() + "')", "Transaksi berhasil ditambahkan");
 
         tampil();
         b_cetak.setEnabled(true);
