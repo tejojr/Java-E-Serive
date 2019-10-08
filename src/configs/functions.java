@@ -10,7 +10,7 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Touch me https://github.com/tejojr 
  * @author Zeref
  */
 public class functions {

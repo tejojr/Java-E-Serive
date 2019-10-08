@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import views.Login1;
 
 /**
- *
+ * Touch me https://github.com/tejojr 
  * @author Zeref
  */
 public class Teknisi extends javax.swing.JInternalFrame {

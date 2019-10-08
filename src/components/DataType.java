@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * Touch me https://github.com/tejojr 
  * @author Zeref
  */
 public class DataType extends javax.swing.JInternalFrame {

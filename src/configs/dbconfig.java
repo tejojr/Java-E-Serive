@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 /**
- *
+ * Touch me https://github.com/tejojr 
  * @author Zeref
  */
 public class dbconfig {

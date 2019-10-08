@@ -6,23 +6,27 @@
 package components;
 
 import configs.functions;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import views.Login1;
 
 /**
+ * Touch me https://github.com/tejojr
  *
  * @author Zeref
  */
 public class TeknisiService extends javax.swing.JInternalFrame {
 
+    public static String id_item1;
     functions f = new functions();
-    String jenis,id_item;
+    String jenis, id_item;
 
     private void tampil() {
         DefaultTableModel model = new DefaultTableModel();
@@ -123,25 +127,41 @@ public class TeknisiService extends javax.swing.JInternalFrame {
             Logger.getLogger(TeknisiService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private void Clear(){
+
+    private void Clear() {
         id_item = "";
         t_idservice2.setText("");
         t_merk.setText("");
         t_keluhan.setText("");
         t_kelengkapan.setText("");
         t_jenis.setText("");
-        t_biaya_service.setText("");
-        t_sparepart.setText("");
-        t_total_biaya.setText("");
+        t_biaya_service.setText("0");
+        t_sparepart.setText("0");
+//        t_total_biaya.setText("0");
         cmb_status.setSelectedItem("");
         t_tgl.setText("");
+    }
+    private int hitungTotal(){
+      int biaya_sparepart = Integer.parseInt(t_sparepart.getText());
+      int biaya_service;
+      if(t_biaya_service.getText().isEmpty()){
+          biaya_service=0;
+      }else{
+          biaya_service=Integer.parseInt(t_biaya_service.getText());
+          
+      }
+      int result = biaya_sparepart+biaya_service;
+      return result;
+//    t_total_biaya.setText(Integer.toString(result));
+        
     }
     /**
      * Creates new form TeknisiService
      */
     public TeknisiService() {
         initComponents();
-        r_all.setSelected(true);
+//        t_total_biaya.setEnabled(false);
+        r_diterima.setSelected(true);
         Clear();
         DateFormat dateFormat = new SimpleDateFormat("dd MMMMM yyyy");
         Date date = new Date();
@@ -193,8 +213,6 @@ public class TeknisiService extends javax.swing.JInternalFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         t_biaya_service = new javax.swing.JTextField();
-        jLabel27 = new javax.swing.JLabel();
-        t_total_biaya = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
         t_tgl = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
@@ -372,18 +390,25 @@ public class TeknisiService extends javax.swing.JInternalFrame {
         jLabel26.setText("Biaya Service : ");
 
         t_biaya_service.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-
-        jLabel27.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        jLabel27.setText("Total Biaya : ");
-
-        t_total_biaya.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        t_total_biaya.setEnabled(false);
+        t_biaya_service.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                t_biaya_serviceKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                t_biaya_serviceKeyTyped(evt);
+            }
+        });
 
         jLabel28.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel28.setText("Tanggal masuk : ");
 
         t_tgl.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         t_tgl.setEnabled(false);
+        t_tgl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_tglActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -405,25 +430,23 @@ public class TeknisiService extends javax.swing.JInternalFrame {
                         .addComponent(t_idservice2, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(t_jenis, javax.swing.GroupLayout.Alignment.LEADING))
                     .addComponent(t_kelengkapan, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(95, 95, 95)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(227, 227, 227)
+                        .addComponent(t_tgl, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(95, 95, 95)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel19)
                             .addComponent(jLabel17)
                             .addComponent(jLabel26)
-                            .addComponent(jLabel27))
+                            .addComponent(jLabel28))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(t_total_biaya, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(t_biaya_service)
-                                .addComponent(cmb_status, 0, 201, Short.MAX_VALUE)
-                                .addComponent(t_sparepart))))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel28)
-                        .addGap(18, 18, 18)
-                        .addComponent(t_tgl, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(t_biaya_service)
+                            .addComponent(cmb_status, 0, 201, Short.MAX_VALUE)
+                            .addComponent(t_sparepart))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -435,35 +458,33 @@ public class TeknisiService extends javax.swing.JInternalFrame {
                     .addComponent(t_idservice2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmb_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel19))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel25)
-                    .addComponent(t_jenis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17)
-                    .addComponent(t_sparepart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel22)
-                    .addComponent(t_merk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel26)
-                    .addComponent(t_biaya_service, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel25)
+                            .addComponent(t_jenis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(13, 13, 13)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel22)
+                            .addComponent(t_merk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel28)
+                            .addComponent(t_tgl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(t_sparepart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel24)
                     .addComponent(t_keluhan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel27)
-                    .addComponent(t_total_biaya, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel23)
-                            .addComponent(t_kelengkapan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel28)
-                            .addComponent(t_tgl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel26)
+                    .addComponent(t_biaya_service, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel23)
+                    .addComponent(t_kelengkapan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -496,6 +517,11 @@ public class TeknisiService extends javax.swing.JInternalFrame {
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Action"));
 
         jButton1.setText("Update");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         b_clear.setText("Clear");
         b_clear.addActionListener(new java.awt.event.ActionListener() {
@@ -511,17 +537,18 @@ public class TeknisiService extends javax.swing.JInternalFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(b_clear, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(b_clear, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
-                .addComponent(b_clear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(b_clear, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -549,10 +576,11 @@ public class TeknisiService extends javax.swing.JInternalFrame {
                                         .addComponent(cari, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 13, Short.MAX_VALUE)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))))
+                                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 7, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -574,15 +602,13 @@ public class TeknisiService extends javax.swing.JInternalFrame {
                 .addGap(13, 13, 13)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(11, 11, 11))
+                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -604,11 +630,13 @@ public class TeknisiService extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void b_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_refreshActionPerformed
-        tampil();        // TODO add your handling code here:
+        tampil();
+        Clear();        // TODO add your handling code here:
     }//GEN-LAST:event_b_refreshActionPerformed
 
     private void cariKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cariKeyReleased
-        tampil();        // TODO add your handling code here:
+        tampil();
+        Clear();        // TODO add your handling code here:
     }//GEN-LAST:event_cariKeyReleased
 
     private void r_diterimaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_r_diterimaItemStateChanged
@@ -616,16 +644,20 @@ public class TeknisiService extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_r_diterimaItemStateChanged
 
     private void showActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showActionPerformed
-        tampil();        // TODO add your handling code here:
+        tampil();
+        Clear();        // TODO add your handling code here:
     }//GEN-LAST:event_showActionPerformed
 
     private void b_check2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_check2ActionPerformed
-        DialogPelanggan dp = new DialogPelanggan(null, true);
-        dp.setVisible(true);
-        t_idpel.setText(dp.id);
-        t_namapel.setText(dp.nama);// TODO add your handling code here:
-        t_alamatpel.setText(dp.alamat);// TODO add your handling code here:
-        t_hppel.setText(dp.notelp);// TODO add your handling code here:
+        if (id_item.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Pilih data yang akan ditambah sparepart terlebih dahulu");
+        } else {
+            DialogSparePart dp = new DialogSparePart(null, true);
+            dp.setVisible(true);
+            t_sparepart.setText(dp.total);
+            tampil();
+        }
+
         // TODO add your handling code here:
     }//GEN-LAST:event_b_check2ActionPerformed
 
@@ -633,15 +665,16 @@ public class TeknisiService extends javax.swing.JInternalFrame {
         int row = tabel.getSelectedRow();
         id_item = tabel.getModel().getValueAt(row, 0).toString();
         t_idservice2.setText(tabel.getModel().getValueAt(row, 1).toString());
-        t_merk.setText( tabel.getModel().getValueAt(row, 2).toString());
+        t_merk.setText(tabel.getModel().getValueAt(row, 2).toString());
         t_keluhan.setText(tabel.getModel().getValueAt(row, 3).toString());
         t_kelengkapan.setText(tabel.getModel().getValueAt(row, 4).toString());
         t_jenis.setText(tabel.getModel().getValueAt(row, 5).toString());
-        t_biaya_service.setText(tabel.getModel().getValueAt(row, 6).toString());
-        t_sparepart.setText(tabel.getModel().getValueAt(row, 7).toString());
-        t_total_biaya.setText(tabel.getModel().getValueAt(row, 8).toString());
+        t_biaya_service.setText(tabel.getModel().getValueAt(row, 7).toString());
+        t_sparepart.setText(tabel.getModel().getValueAt(row, 6).toString());
+//        t_total_biaya.setText(tabel.getModel().getValueAt(row, 8).toString());
         cmb_status.setSelectedItem(tabel.getModel().getValueAt(row, 9).toString());
         t_tgl.setText(tabel.getModel().getValueAt(row, 10).toString());
+        id_item1 = tabel.getModel().getValueAt(row, 0).toString();
 // TODO add your handling code here:
     }//GEN-LAST:event_tabelMouseClicked
 
@@ -653,12 +686,54 @@ public class TeknisiService extends javax.swing.JInternalFrame {
         Clear();        // TODO add your handling code here:
     }//GEN-LAST:event_b_clearActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (id_item.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Pilih data sparepart terlebih dahulu");
+        } else {
+            if (t_biaya_service.getText().isEmpty()) {
+            t_biaya_service.setText("0");
+            }
+            f.cud("update item set biaya_service = '" + t_biaya_service.getText()
+                    + "', total_biaya = '" +hitungTotal()+ "', status = '"
+                    + cmb_status.getSelectedItem().toString() + "' where id = '" + id_item
+                    + "'", "Data dengan id '" + id_item + "' berhasil diubah");
+             f.cud1("update service set  status = '"
+                    + cmb_status.getSelectedItem().toString() +
+                     "',total_biaya = (SELECT total_biaya FROM `item` WHERE id ='" + id_item +
+                     "') where id = '" + t_idservice2.getText()
+                    + "'");
+            Clear();
+            tampil();
+           
+        }
+         
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void t_biaya_serviceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_biaya_serviceKeyTyped
+        char vChar = evt.getKeyChar();
+        if (!(Character.isDigit(vChar)
+                || (vChar == KeyEvent.VK_BACK_SPACE)
+                || (vChar == KeyEvent.VK_DELETE))) {
+            evt.consume();
+        }
+      
+       
+        
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t_biaya_serviceKeyTyped
+
+    private void t_tglActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_tglActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t_tglActionPerformed
+
+    private void t_biaya_serviceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_biaya_serviceKeyPressed
+                // TODO add your handling code here:
+    }//GEN-LAST:event_t_biaya_serviceKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton b_check;
-    private javax.swing.JButton b_check1;
     private javax.swing.JButton b_check2;
-    private javax.swing.JButton b_check3;
     private javax.swing.JButton b_clear;
     private javax.swing.JButton b_refresh;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -667,13 +742,6 @@ public class TeknisiService extends javax.swing.JInternalFrame {
     private javax.swing.JLabel datetoday;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -683,19 +751,12 @@ public class TeknisiService extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton r_all;
@@ -703,25 +764,14 @@ public class TeknisiService extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton r_diterima;
     private javax.swing.JRadioButton r_selesai;
     private javax.swing.JButton show;
-    private javax.swing.JTextField t_alamatpel;
-    private javax.swing.JTextField t_alamatpel1;
     private javax.swing.JTextField t_biaya_service;
-    private javax.swing.JTextField t_hppel;
-    private javax.swing.JTextField t_hppel1;
-    private javax.swing.JTextField t_idpel;
-    private javax.swing.JTextField t_idpel1;
-    private javax.swing.JTextField t_idservice;
-    private javax.swing.JTextField t_idservice1;
     private javax.swing.JTextField t_idservice2;
     private javax.swing.JTextField t_jenis;
     private javax.swing.JTextField t_kelengkapan;
     private javax.swing.JTextField t_keluhan;
     private javax.swing.JTextField t_merk;
-    private javax.swing.JTextField t_namapel;
-    private javax.swing.JTextField t_namapel1;
     private javax.swing.JTextField t_sparepart;
     private javax.swing.JTextField t_tgl;
-    private javax.swing.JTextField t_total_biaya;
     private javax.swing.JTable tabel;
     // End of variables declaration//GEN-END:variables
 }
