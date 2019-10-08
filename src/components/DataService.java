@@ -101,7 +101,7 @@ public class DataService extends javax.swing.JInternalFrame {
         tampil();
         DateFormat dateFormat = new SimpleDateFormat("dd MMMMM yyyy");
         Date date = new Date();
-        datetoday.setText(dateFormat.format(date).toString());
+        datetoday.setText(dateFormat.format(date));
     }
 
     /**

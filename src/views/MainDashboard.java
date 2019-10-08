@@ -207,7 +207,13 @@ public class MainDashboard extends javax.swing.JFrame {
     private void mi_pengambilanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_pengambilanActionPerformed
         PengambilanService ps = new PengambilanService();
         Desktop.add(ps);
-        ps.setVisible(true);          // TODO add your handling code here:
+        ps.setVisible(true);
+        try {
+            ps.setMaximum(true);// TODO add your handling code here:
+            // TODO add your handling code here:
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainDashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }// TODO add your handling code here:
     }//GEN-LAST:event_mi_pengambilanActionPerformed
 
     private void mi_daftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_daftarActionPerformed

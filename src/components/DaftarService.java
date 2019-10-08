@@ -144,9 +144,9 @@ public class DaftarService extends javax.swing.JInternalFrame {
      */
     public DaftarService() {
         initComponents();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("dd MMMMM yyyy");
         Date date = new Date();
-        datetoday.setText(dateFormat.format(date).toString());
+        datetoday.setText(dateFormat.format(date));
         autonumber();
         tampil_combo();
         b_cetak.setEnabled(false);
@@ -362,7 +362,7 @@ public class DaftarService extends javax.swing.JInternalFrame {
             }
         });
 
-        b_reset.setText("Reset");
+        b_reset.setText("Clear");
         b_reset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 b_resetActionPerformed(evt);
@@ -405,7 +405,7 @@ public class DaftarService extends javax.swing.JInternalFrame {
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(25, 25, 25))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(571, Short.MAX_VALUE)
+                .addContainerGap(575, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(b_simpan)
@@ -489,8 +489,10 @@ public class DaftarService extends javax.swing.JInternalFrame {
 
     private void b_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_simpanActionPerformed
         mati();
+         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date();
         f.cud1("INSERT into service values ('"+t_idservice.getText()+
-                "','" + datetoday.getText() +
+                "','" +  dateFormat.format(date) +
                 "',null,'diterima',0,'" +
                 Login1.id + "','" +
                 t_idpel.getText() + "')");
