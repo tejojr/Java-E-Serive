@@ -26,13 +26,14 @@ public class DataService extends javax.swing.JInternalFrame {
         model.addColumn("Status");
         model.addColumn("Id Pelanggan");
         model.addColumn("Nama Pelanggan");
+        model.addColumn("No Telp");
         model.addColumn("Id Item");
         model.addColumn("Merk");
         model.addColumn("Jenis");
         
         try {
             String cari =this.cari.getText();
-            String basicQuery = "SELECT service.id, service.tgl_masuk,service.status,service.id_pelanggan, pelanggan.nama,item.id as id_item,item.merk,jenis.name as jenis FROM `item` INNER join service on item.id_service = service.id INNER join jenis on item.id_jenis = jenis.id INNER JOIN pelanggan on pelanggan.id = service.id_pelanggan where 1";
+            String basicQuery = "SELECT service.id, service.tgl_masuk,service.status,service.id_pelanggan, pelanggan.nama,pelanggan.no_telp,item.id as id_item,item.merk,jenis.name as jenis FROM `item` INNER join service on item.id_service = service.id INNER join jenis on item.id_jenis = jenis.id INNER JOIN pelanggan on pelanggan.id = service.id_pelanggan where 1";
             if (r_diambil.isSelected()) {
                 if (cari.length() > 0) {
                     f.select(basicQuery + " and service.status = 'diambil' and pelanggan.nama like '%" + cari + "%' or item.merk like '%" + cari + "%' or jenis.name like '%" + cari + "%'");
@@ -79,6 +80,7 @@ public class DataService extends javax.swing.JInternalFrame {
                     f.rs.getString("status"),
                     f.rs.getString("id_pelanggan"),
                     f.rs.getString("nama"),
+                     f.rs.getString("no_telp"),
                     f.rs.getString("id_item"),
                     f.rs.getString("merk"),
                     f.rs.getString("jenis"),});

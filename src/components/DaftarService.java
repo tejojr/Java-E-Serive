@@ -15,10 +15,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import report.printNow;
 import views.Login1;
 
 /**
- * Touch me https://github.com/tejojr 
+ * Touch me https://github.com/tejojr
+ *
  * @author Zeref
  */
 public class DaftarService extends javax.swing.JInternalFrame {
@@ -28,7 +30,7 @@ public class DaftarService extends javax.swing.JInternalFrame {
     private void autonumber() {
         try {
             String sql = "SELECT MAX(RIGHT(id,6)) AS NO FROM service";
-            Statement st =  dbconfig.Con().createStatement();
+            Statement st = dbconfig.Con().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 if (rs.first() == false) {
@@ -86,7 +88,7 @@ public class DaftarService extends javax.swing.JInternalFrame {
 
     public void tampil_combo() {
         try {
-            Statement stt =  dbconfig.Con().createStatement();
+            Statement stt = dbconfig.Con().createStatement();
             String sql = "select * from jenis order by id asc";      // disini saya menampilkan NIM, anda dapat menampilkan
             ResultSet res = stt.executeQuery(sql);                                // yang anda ingin kan
 
@@ -113,7 +115,6 @@ public class DaftarService extends javax.swing.JInternalFrame {
         t_merk.setText("");
         t_keluhan.setText("");
         t_kelengkapan.setText("");
-
 
     }
 
@@ -489,13 +490,13 @@ public class DaftarService extends javax.swing.JInternalFrame {
 
     private void b_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_simpanActionPerformed
         mati();
-         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = new Date();
-        f.cud1("INSERT into service values ('"+t_idservice.getText()+
-                "','" +  dateFormat.format(date) +
-                "',null,'diterima',0,'" +
-                Login1.id + "','" +
-                t_idpel.getText() + "')");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        f.cud1("INSERT into service values ('" + t_idservice.getText()
+                + "','" + dateFormat.format(date)
+                + "',null,'diterima',0,'"
+                + Login1.id + "','"
+                + t_idpel.getText() + "')");
         String[] jenis = cmb_jenis.getSelectedItem().toString().split("-");
         f.cud("INSERT into item value (null,'" + jenis[0]
                 + "','" + t_merk.getText()
@@ -514,7 +515,40 @@ public class DaftarService extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_b_resetActionPerformed
 
     private void b_cetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cetakActionPerformed
-        JOptionPane.showMessageDialog(null, "Mencetak Nota");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        String[] jenis = cmb_jenis.getSelectedItem().toString().split("-");
+        String header
+                = "***************Nota Terima Service***************;"
+                + "Fazt Service \n;"
+                + "Jln. Maju Mundur, Kota/Kab. Sims City \n;"
+                + "Telp. 085712345678  \n;"
+                + "-------------------------------------------------\n;"
+                + "Date   : " + dateFormat.format((date)) + "       " + "Time:" + timeFormat.format(date) + "\n;"
+                + "Id     : " + t_idpel.getText() + "\n;"
+                + "Nama   : " + t_namapel.getText() + "\n;"
+                + "Alamat : " + t_alamatpel.getText() + "\n;"
+                + "Telepon: " + t_hppel.getText() + "\n;"
+                + "-------------------------------------------------\n;"
+                + "Detail Barang \n;"
+                + "-------------------------------------------------\n;"
+                + "No Service    : " + t_idservice.getText() + "\n;"
+                + "Merk/Type     : " + t_merk.getText() + "/" + jenis[1] + "\n;"
+                + "Kelengkapan   : " + t_kelengkapan.getText() + "\n;"
+                + "Keluhan       : " + t_keluhan.getText() + "\n;";
+        String footer
+                = "-------------------------------------------------\n;"
+                + "-------------------------------------------------\n;"
+                + "          Melayani Service 24 jam      \n ;"
+                + "          Dijamin Joss!!!!!!!!!!!      \n;"
+                + "**************************************************\n;"
+                + "               Thank You             \n;"
+                + "___________________________________________________\n;";
+        String a = header + footer;
+        printNow pn = new printNow();
+        pn.printCard(a);
         clear();
         hidup();
         DefaultTableModel model = (DefaultTableModel) tabel.getModel();

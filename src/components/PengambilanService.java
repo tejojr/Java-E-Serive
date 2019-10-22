@@ -15,14 +15,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import report.printNow;
 
 /**
- * Touch me https://github.com/tejojr 
+ * Touch me https://github.com/tejojr
+ *
  * @author Zeref
  */
 public class PengambilanService extends javax.swing.JInternalFrame {
+
     functions f = new functions();
-    String iditem="";
+    String iditem = "";
+
     /**
      * Creates new form PengambilanService
      */
@@ -33,7 +37,8 @@ public class PengambilanService extends javax.swing.JInternalFrame {
         Date date = new Date();
         datetoday.setText(dateFormat.format(date));
     }
-    private void Clear(){
+
+    private void Clear() {
         DefaultTableModel model = (DefaultTableModel) tabel.getModel();
         model.setRowCount(0);
         DefaultTableModel model1 = (DefaultTableModel) tabel3.getModel();
@@ -49,11 +54,12 @@ public class PengambilanService extends javax.swing.JInternalFrame {
         t_bayar.setText("0");
         t_totalbiaya.setText("0");
         t_kembalian.setText("0");
-        iditem="";
+        iditem = "";
         t_idservice.requestFocus();
-        
+
     }
-    private void tampilSparepart(){
+
+    private void tampilSparepart() {
         DefaultTableModel model3 = new DefaultTableModel();
         model3.addColumn("No");
         model3.addColumn("ID");
@@ -82,7 +88,8 @@ public class PengambilanService extends javax.swing.JInternalFrame {
 
         }
     }
-    private void tampilItem(){
+
+    private void tampilItem() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("No");
         model.addColumn("ID Barang");
@@ -94,8 +101,8 @@ public class PengambilanService extends javax.swing.JInternalFrame {
         model.addColumn("Biaya Spare Part");
         model.addColumn("Total Biaya");
         try {
-            f.select(" SELECT item.id, item.merk, item.keluhan, item.kelengkapan, jenis.name as jenis, item.biaya_service,item.totbiaya_spare_part,item.total_biaya,item.status FROM item INNER JOIN jenis on item.id_jenis = jenis.id where id_service = '"+t_idservice.getText()+"'");
-            int no = 1;       
+            f.select(" SELECT item.id, item.merk, item.keluhan, item.kelengkapan, jenis.name as jenis, item.biaya_service,item.totbiaya_spare_part,item.total_biaya,item.status FROM item INNER JOIN jenis on item.id_jenis = jenis.id where id_service = '" + t_idservice.getText() + "'");
+            int no = 1;
             while (f.rs.next()) {
                 model.addRow(new Object[]{
                     no++,
@@ -106,34 +113,35 @@ public class PengambilanService extends javax.swing.JInternalFrame {
                     f.rs.getString(5),
                     f.rs.getString(6),
                     f.rs.getString(7),
-                    f.rs.getString(8),
-                });
+                    f.rs.getString(8),});
             }
             tabel.setModel(model);
         } catch (Exception e) {
             System.out.println(e);
 
         }
-   
+
     }
-    private int hitungTotal(){
-      int biaya= Integer.parseInt(t_totalbiaya.getText());
-      int bayar;
-      if(t_bayar.getText().isEmpty()){
-          bayar=0;
-      }else{
-          bayar=Integer.parseInt(t_bayar.getText());
-          
-      }
-      int result = bayar-biaya;
-      return result;
+
+    private int hitungTotal() {
+        int biaya = Integer.parseInt(t_totalbiaya.getText());
+        int bayar;
+        if (t_bayar.getText().isEmpty()) {
+            bayar = 0;
+        } else {
+            bayar = Integer.parseInt(t_bayar.getText());
+
+        }
+        int result = bayar - biaya;
+        return result;
     }
-    private void cariPelanggan(){
+
+    private void cariPelanggan() {
         f.select("SELECT service.id, service.tgl_masuk,service.status,service.total_biaya,service.id_pelanggan, pelanggan.nama, pelanggan.alamat,pelanggan.no_telp FROM service INNER JOIN pelanggan on pelanggan.id = service.id_pelanggan where service.id = '" + t_idservice.getText() + "'");
         try {
             if (f.rs.next()) {
-                String status =  f.rs.getString("status");
-                if(status.equals("selesai")){
+                String status = f.rs.getString("status");
+                if (status.equals("selesai")) {
                     t_idpel.setText(f.rs.getString("id_pelanggan"));
                     t_namapel.setText(f.rs.getString("nama"));
                     t_alamatpel.setText(f.rs.getString("alamat"));
@@ -142,20 +150,20 @@ public class PengambilanService extends javax.swing.JInternalFrame {
                     t_totalbiaya.setText(f.rs.getString("total_biaya"));
                     tampilItem();
                     t_bayar.requestFocus();
-                }else if(status.equals("diambil")){
-                    JOptionPane.showMessageDialog(null, "SUdah Diambil"); 
+                } else if (status.equals("diambil")) {
+                    JOptionPane.showMessageDialog(null, "SUdah Diambil");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Service Belum Selesai");
                 }
-                else{
-                   JOptionPane.showMessageDialog(null, "Service Belum Selesai"); 
-                }
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Data Tidak Ditemukan");
             }
         } catch (SQLException ex) {
             Logger.getLogger(PengambilanService.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
+
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -397,7 +405,7 @@ public class PengambilanService extends javax.swing.JInternalFrame {
             }
         });
 
-        b_cetak.setText("Check Out");
+        b_cetak.setText("Print");
         b_cetak.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 b_cetakActionPerformed(evt);
@@ -605,14 +613,80 @@ public class PengambilanService extends javax.swing.JInternalFrame {
         if (t_idservice.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Isi Id Service terlebih dahulu");
         } else {
-             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
             f.cud("update service set tgl_keluar = '" + dateFormat.format(date)
                     + "', status= 'diambil' where id = '" + t_idservice.getText()
-                    + "'", "Selanjutnya tampil checkout tapi belum selesai :v. Kembalian : '"+t_kembalian.getText()+"'");
-            
+                    + "'", "Kembalian : '" + t_kembalian.getText() + "'");
+            DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+            String header
+                    = "***************Pengambilan Service***************;"
+                    + "Fazt Service \n;"
+                    + "Jln. Maju Mundur, Kota/Kab. Sims City \n;"
+                    + "Telp. 085712345678  \n;"
+                    + "-------------------------------------------------\n;"
+                    + "Date   : " + dateFormat.format((date)) + "       " + "Time:" + timeFormat.format(date) + "\n;"
+                    + "Id     : " + t_idpel.getText() + "\n;"
+                    + "Nama   : " + t_namapel.getText() + "\n;"
+                    + "Alamat : " + t_alamatpel.getText() + "\n;"
+                    + "Telepon: " + t_hppel.getText() + "\n;"
+                    + "-------------------------------------------------\n;"
+                    + "Detail Barang \n;"
+                    + "-------------------------------------------------\n;"
+                    + "No Service    : " + t_idservice.getText() + "\n;"
+                    + "Merk/Type     : " + tabel.getModel().getValueAt(0, 2).toString() + "/" + tabel.getModel().getValueAt(0, 5).toString() + "\n;"
+                    + "Kelengkapan   : " + tabel.getModel().getValueAt(0, 4).toString() + "\n;"
+                    + "Keluhan       : " + tabel.getModel().getValueAt(0, 3).toString() + "\n;"
+                    + "Biaya Service : " + tabel.getModel().getValueAt(0, 6).toString() + "\n;";
+            String sparePart = "";
+            String detailSparepat = "";
+            try {
+                f.select("select * from sparepart where id_item =  '" + tabel.getModel().getValueAt(0, 1).toString() + "' ");
+                System.out.println(tabel.getModel().getValueAt(0, 1).toString());
+                if (!f.rs.isBeforeFirst()) {
+                    sparePart = "";
+                    System.out.println("No data sparepart");
+
+                } else {
+                    sparePart = "-------------------------------------------------\n;"
+                            + "Sparepart\n;"
+                            + "-------------------------------------------------\n;"
+                            + "Name             Qty    Amount      Total   \n;"
+                            + "+++++++++++++++++++++++++++++++++++++++++++++++++\n;";
+                    while (f.rs.next()) {
+                        detailSparepat += f.rs.getString("name")
+                                + "             "
+                                + f.rs.getString("qty")
+                                + "       "
+                                + f.rs.getString("price")
+                                + "         " + f.rs.getString("sub_price") + "\n;";
+                    }
+                    detailSparepat
+                            += "\n;+++++++++++++++++++++++++++++++++++++++++++++++++\n;"
+                            + "Total SparePart:                 Rp." + tabel.getModel().getValueAt(0, 7).toString() + "\n;";
+                }
+
+                System.out.println(detailSparepat);
+            } catch (Exception e) {
+                System.out.println(e);
+
+            }
+
+            String footer
+                    = "Total         : Rp." + tabel.getModel().getValueAt(0, 8).toString() + "\n;"
+                    + "-------------------------------------------------\n;"
+                    + "-------------------------------------------------\n;"
+                    + "          Melayani Service 24 jam      \n ;"
+                    + "          Dijamin Joss!!!!!!!!!!!      \n;"
+                    + "**************************************************\n;"
+                    + "               Thank You             \n;"
+                    + "___________________________________________________\n;";
+            String a = header + sparePart + detailSparepat + footer;
+            printNow pn = new printNow();
+            pn.printCard(a);
             Clear();
-           
+            detailSparepat = "";
+
         }
     }//GEN-LAST:event_b_cetakActionPerformed
 
@@ -621,14 +695,14 @@ public class PengambilanService extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_b_resetActionPerformed
 
     private void b_checkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_checkActionPerformed
-       cariPelanggan();
-       
-        
+        cariPelanggan();
+
+
     }//GEN-LAST:event_b_checkActionPerformed
 
     private void tabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelMouseClicked
         int row = tabel.getSelectedRow();
-        iditem = tabel.getModel().getValueAt(row, 1).toString(); 
+        iditem = tabel.getModel().getValueAt(row, 1).toString();
         System.out.println(iditem);
         tampilSparepart();
 // TODO add your handling code here:
@@ -637,8 +711,8 @@ public class PengambilanService extends javax.swing.JInternalFrame {
     private void t_bayarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_bayarKeyReleased
         t_kembalian.setText(Integer.toString(hitungTotal()));
 //    t_total_biaya.setText(Integer.toString(result));
-        
-           // TODO add your handling code here:
+
+        // TODO add your handling code here:
     }//GEN-LAST:event_t_bayarKeyReleased
 
     private void t_bayarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_bayarKeyTyped
@@ -675,9 +749,7 @@ public class PengambilanService extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField t_alamatpel;
     private javax.swing.JTextField t_bayar;
@@ -689,7 +761,6 @@ public class PengambilanService extends javax.swing.JInternalFrame {
     private javax.swing.JTextField t_tglmasuk;
     private javax.swing.JTextField t_totalbiaya;
     private javax.swing.JTable tabel;
-    private javax.swing.JTable tabel1;
     private javax.swing.JTable tabel3;
     // End of variables declaration//GEN-END:variables
 }
